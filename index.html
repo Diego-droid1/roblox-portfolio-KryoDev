@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KryoDev | Roblox Scripter & UI Designer</title>
+  <meta name="description"
+    content="KryoDev – Elite Roblox Scripter & UI Designer redefining immersive game systems. 5+ years experience in high-level development.">
+
+  <!-- Fuente -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- AOS CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #00ffe7;
+      --secondary: #0ff;
+      --bg-dark: #010409;
+      --bg-light: #f5f5f5;
+      --text-light: #e0e0e0;
+      --text-dark: #222;
+      --text-muted-light: #555;
+      --text-muted-dark: #777;
+      --card-bg-dark: rgba(0, 255, 231, 0.04);
+      --card-bg-light: rgba(255, 255, 255, 0.8);
+      --border-glow: rgba(0, 255, 231, 0.4);
+      --accent-glow: 0 0 30px rgba(0, 255, 231, 0.6);
+    }
+
+    /* Modo claro / oscuro */
+    body {
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      transition: background 0.3s, color 0.3s;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body.light {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: inherit;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 700;
+      background-image: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 6s linear infinite;
+      text-shadow: 0 0 15px #00ffe7cc;
+      transition: background 0.3s;
+    }
+
+    @keyframes shine {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      100% {
+        background-position: 100% 50%;
+      }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      margin-bottom: 1rem;
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.3rem;
+      text-shadow: var(--accent-glow);
+    }
+
+    p {
+      font-size: clamp(1rem, 1.5vw, 1.1rem);
+      color: var(--text-light);
+    }
+
+    body.light p {
+      color: var(--text-dark);
+    }
+
+    section {
+      margin-bottom: 3.5rem;
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .skill {
+      background: var(--card-bg-dark);
+      border: 1px solid var(--border-glow);
+      padding: 0.5rem 1.25rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 10px #00ffe720;
+    }
+
+    body.light .skill {
+      background: var(--card-bg-light);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .skill:hover {
+      box-shadow: 0 0 15px var(--primary);
+      transform: scale(1.05);
+    }
+
+    /* Gráfica de barras */
+    .bar-chart {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .bar-chart .bar {
+      display: flex;
+      align-items: center;
+      margin: 0.75rem 0;
+    }
+
+    .bar-chart .bar-label {
+      width: 25%;
+      font-size: 1rem;
+      text-align: right;
+      padding-right: 1rem;
+    }
+
+    .bar-chart .bar-inner {
+      width: 75%;
+      background: var(--card-bg-dark);
+      border: 1px solid var(--border-glow);
+      position: relative;
+      height: 1.5rem;
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+
+    body.light .bar-chart .bar-inner {
+      background: var(--card-bg-light);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .bar-chart .bar-fill {
+      height: 100%;
+      background: var(--primary);
+      width: 0%; /* se animará con JS */
+      transition: width 1s ease-out;
+    }
+
+    .bar-chart .bar-percentage {
+      position: absolute;
+      right: 0.5rem;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    body.light .bar-chart .bar-percentage {
+      color: var(--text-dark);
+    }
+
+    .videos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .video-card {
+      background: linear-gradient(145deg, #011, #033);
+      border: 1px solid var(--border-glow);
+      border-radius: 15px;
+      padding: 1rem;
+      backdrop-filter: blur(8px);
+      text-align: center;
+      box-shadow: 0 0 25px rgba(0, 255, 231, 0.2);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body.light .video-card {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px var(--primary);
+    }
+
+    .video-card iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .video-card h3 {
+      font-size: 1.1rem;
+      color: var(--text-light);
+      margin-top: 0.7rem;
+    }
+
+    body.light .video-card h3 {
+      color: var(--text-dark);
+    }
+
+    .contact a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .contact a:hover {
+      text-decoration: underline;
+      color: #0ff;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: var(--text-muted-light);
+      background: #000;
+      border-top: 1px solid #111;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.light footer {
+      background: #fafafa;
+      color: var(--text-muted-dark);
+      border-top: 1px solid #ddd;
+    }
+
+    /* Botón volver arriba */
+    #backToTop {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--primary);
+      color: #000;
+      padding: 0.8rem 1rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--primary);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 200;
+    }
+
+    #backToTop.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Parallax efecto container */
+    .parallax {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .parallax .parallax-bg {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120%;
+      height: 150%;
+      background: url('https://your-image-url.jpg') center / cover no-repeat;
+      pointer-events: none;
+      z-index: -1;
+      transform: translateY(0);
+      transition: transform 0.1s;
+    }
+
+    @media (max-width: 768px) {
+      .skills {
+        justify-content: center;
+      }
+      .video-card iframe {
+        height: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .video-card h3 {
+        font-size: 1rem;
+      }
+      .skill {
+        font-size: 0.85rem;
+        padding: 0.4rem 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    KryoDev – Scripter & UI Architect ⚡
+    <!-- Toggle botón modo claro/oscuro -->
+    <button id="themeToggle" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--primary); font-size: 1.2rem; cursor: pointer;">
+      🌓
+    </button>
+  </header>
+
+  <main class="container">
+
+    <section data-aos="fade-up">
+      <h2>👤 About Me</h2>
+      <p>
+        I'm <strong>KryoDev</strong>, a senior-level Roblox scripter with over 5 years of experience and 3 years
+        in professional UI design. I specialize in scalable game systems, polished UI/UX, and immersive player experiences.
+      </p>
+    </section>
+
+    <section data-aos="fade-up">
+      <h2>🛠️ Skills</h2>
+      <div class="skills">
+        <div class="skill">Lua Programming</div>
+        <div class="skill">OOP in Roblox</div>
+        <div class="skill">UI Design</div>
+        <div class="skill">TweenService</div>
+        <div class="skill">Remote Events</div>
+        <div class="skill">Datastore Systems</div>
+        <div class="skill">Roblox Modules</div>
+        <div class="skill">ContextActionService</div>
+        <div class="skill">Custom HUDs</div>
+        <div class="skill">Optimization</div>
+      </div>
+    </section>
+
+    <section data-aos="fade-up">
+      <h2>📊 Technical Domain</h2>
+      <div class="bar-chart" id="skillChart">
+        <!-- Aquí defines tus habilidades y porcentaje -->
+        <div class="bar" data-percent="90">
+          <div class="bar-label">Lua</div>
+          <div class="bar-inner">
+            <div class="bar-fill"></div>
+            <div class="bar-percentage">0%</div>
+          </div>
+        </div>
+        <div class="bar" data-percent="80">
+          <div class="bar-label">UI Design</div>
+          <div class="bar-inner">
+            <div class="bar-fill"></div>
+            <div class="bar-percentage">0%</div>
+          </div>
+        </div>
+        <div class="bar" data-percent="75">
+          <div class="bar-label">Datastores & Systems</div>
+          <div class="bar-inner">
+            <div class="bar-fill"></div>
+            <div class="bar-percentage">0%</div>
+          </div>
+        </div>
+        <div class="bar" data-percent="85">
+          <div class="bar-label">Optimization</div>
+          <div class="bar-inner">
+            <div class="bar-fill"></div>
+            <div class="bar-percentage">0%</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="parallax" data-aos="fade-up">
+      <div class="parallax-bg"></div>
+      <h2 style="text-align: center; padding: 4rem 0; color: var(--primary);">Projects Showcases</h2>
+    </section>
+
+    <section data-aos="fade-up">
+      <h2>🌠 Systems Showcases</h2>
+      <div class="videos">
+        <div class="video-card">
+          <iframe src="https://www.youtube.com/embed/dBsTO_snkik" title="Rounds System Showcase" allowfullscreen></iframe>
+          <h3>Rounds System Showcase</h3>
+        </div>
+        <div class="video-card">
+          <iframe src="https://www.youtube.com/embed/XVDEPaWnflc" title="Economy System Showcase" allowfullscreen></iframe>
+          <h3>Economy System Showcase</h3>
+        </div>
+        <div class="video-card">
+          <iframe src="https://www.youtube.com/embed/f9j5wapuwHo" title="Quest System Showcase" allowfullscreen></iframe>
+          <h3>Quest System Showcase</h3>
+        </div>
+        <div class="video-card">
+          <iframe src="https://www.youtube.com/embed/P2ikILtxBvw" title="Tic Tac Toe Showcase" allowfullscreen></iframe>
+          <h3>UI Tic Tac Toe System Showcase</h3>
+        </div>
+        <div class="video-card">
+          <iframe src="https://www.youtube.com/embed/wr2JH_ECdSU" title="Ship Wars Showcase" allowfullscreen></iframe>
+          <h3>UI Ship Wars System Showcase</h3>
+        </div>
+        <div class="video-card">
+          <iframe src="https://www.youtube.com/embed/M-cSGeW9BZw" title="VIP Showcase" allowfullscreen></iframe>
+          <h3>VIP System Showcase</h3>
+        </div>
+        <div class="video-card">
+          <iframe src="https://www.youtube.com/embed/0G6Zhrqkjjg" title="SkipStage + Arrow Showcase" allowfullscreen></iframe>
+          <h3>UI SkipStage + Pointing Arrow Showcase</h3>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" data-aos="fade-up">
+      <h2>📬 Contact</h2>
+      <p>Let's build something legendary. Reach out to me:</p>
+      <p>Email: <a href="mailto:charbel.monkiki@gmail.com">charbel.monkiki@gmail.com</a></p>
+      <p>Discord: <strong>@diegothedev</strong></p>
+    </section>
+
+  </main>
+
+  <footer>
+    &copy; 2025 KryoDev – Roblox Developer. All rights reserved.
+  </footer>
+
+  <button id="backToTop">⬆️ Top</button>
+
+  <!-- AOS JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+  <script>
+    // Inicializar AOS
+    AOS.init({
+      once: true,
+      duration: 800
+    });
+
+    // Modo claro / oscuro toggle
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+    });
+
+    // Botón volver arriba
+    const backBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backBtn.classList.add('show');
+      } else {
+        backBtn.classList.remove('show');
+      }
+    });
+    backBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Gráfica de barras: animar al entrar en viewport
+    function animateBars() {
+      const bars = document.querySelectorAll('.bar');
+      bars.forEach(bar => {
+        const fill = bar.querySelector('.bar-fill');
+        const percentEl = bar.querySelector('.bar-percentage');
+        const target = bar.getAttribute('data-percent');
+        fill.style.width = target + '%';
+        percentEl.textContent = target + '%';
+      });
+    }
+
+    // Ejecutar animación cuando sección entra en vista
+    const chartSection = document.getElementById('skillChart');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateBars();
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.4 });
+    observer.observe(chartSection);
+
+    // Parallax simple
+    window.addEventListener('scroll', () => {
+      const parallaxBg = document.querySelector('.parallax-bg');
+      if (parallaxBg) {
+        const offset = window.scrollY * 0.25;
+        parallaxBg.style.transform = `translate(-50%, ${offset}px)`;
+      }
+    });
+  </script>
+</body>
+
+</html>
